@@ -10,7 +10,7 @@ const Login = () => {
     const location = useLocation();
     const navigate = useNavigate();
 
-    if(user) return <Navigate to={"/"}></Navigate>
+    if(user) return <Navigate to={"/"}></Navigate>;
     
     const handleLogin = e => {
         e.preventDefault();

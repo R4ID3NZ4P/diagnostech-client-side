@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import useAuth from "../../Hooks/useAuth";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import GoogleLogin from "../Shared/GoogleLogin/GoogleLogin";
 import { useEffect, useState } from "react";
 import useAxiosPublic from "../../Hooks/useAxiosPublic";
@@ -14,7 +14,7 @@ const Register = () => {
         formState: { errors },
     } = useForm();
 
-    const { register: signUp, update } = useAuth();
+    const { user, register: signUp, update, logout } = useAuth();
     const location = useLocation();
     const navigate = useNavigate();
     const axiosPublic = useAxiosPublic();
@@ -31,6 +31,8 @@ const Register = () => {
             .then((res) => res.json())
             .then((data) => setUpazilas(data[2].data));
     }, []);
+
+    if(user) return (<Navigate to={"/"}></Navigate>);
 
     const imgKey = import.meta.env.VITE_imageAPI;
     const imgbb = `https://api.imgbb.com/1/upload?key=${imgKey}`;
@@ -72,12 +74,14 @@ const Register = () => {
                         Swal.fire({
                             position: "top",
                             icon: "success",
-                            title: "Successfully registered!",
+                            title: "Successfully registered! Please sign in with your credentials",
                             showConfirmButton: false,
                             timer: 1500
                         });
-                        if(location.state?.from) navigate(location.state?.from)
-                        else navigate("/");
+                        logout()
+                        .then(() => {
+                            navigate("/login", {state: location?.state});
+                        }); 
                     }
                 })
             })

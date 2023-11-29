@@ -60,7 +60,17 @@ const Navbar = () => {
                         {navLinks}
                     </ul>
                 </div>
-                {user ? <button onClick={logout} className="btn btn-md px-6 rounded-badge btn-primary text-white">Logout</button> : 
+                {user ? <>
+                    <div className="tooltip tooltip-bottom mr-6 flex justify-center items-center" data-tip={user?.displayName}>
+                        <div className="avatar">
+                            <div className="w-12 rounded-full">
+                            <img src={user?.photoURL} />
+                            </div>
+                        </div>
+                    </div> 
+                    <button onClick={logout} className="btn btn-md px-6 rounded-badge btn-primary text-white">Logout</button> 
+                    </>
+                : 
                         <Link to={"/login"} className="btn btn-md px-6 rounded-badge btn-primary text-white">Login</Link>
                 }
             </div>
