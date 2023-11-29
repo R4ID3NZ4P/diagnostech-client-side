@@ -1,4 +1,4 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import loginImage from "../../assets/login.jpg";
 import GoogleLogin from "../Shared/GoogleLogin/GoogleLogin";
 import useAuth from "../../Hooks/useAuth";
@@ -6,9 +6,11 @@ import Swal from "sweetalert2";
 
 const Login = () => {
 
-    const {login} = useAuth();
+    const {user, login} = useAuth();
     const location = useLocation();
     const navigate = useNavigate();
+
+    if(user) return <Navigate to={"/"}></Navigate>
     
     const handleLogin = e => {
         e.preventDefault();
@@ -43,7 +45,7 @@ const Login = () => {
     }
 
     return (
-        <div className="hero min-h-screen">
+        <div className="hero min-h-screen bg-gradient-to-r from-white to-[#038b9d7a]">
             <div className="hero-content flex-col lg:flex-row lg:items-end gap-0">
                 <div className="text-center lg:text-left">
                     <h1 className="text-3xl font-bold mb-4 text-primary">Login</h1>

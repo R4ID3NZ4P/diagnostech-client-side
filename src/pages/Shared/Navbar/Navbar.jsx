@@ -1,22 +1,26 @@
 import { Link, NavLink } from "react-router-dom";
 import useAuth from "../../../Hooks/useAuth";
+import useAdmin from "../../../Hooks/useAdmin";
 
 
 const Navbar = () => {
 
-    const {user, loading} = useAuth();
+    const {user, loading, logout} = useAuth();
+    const { isAdmin } = useAdmin();
 
     const navLinks = 
     <>
         <li><NavLink to={"/"}>Home</NavLink></li>
-        <li><NavLink to={"/all"}>All Tests</NavLink></li>
-        <li><NavLink to={"/login"}>Login</NavLink></li>
-        <li><NavLink to={"/userDashboard"}>Dashboard</NavLink></li>
-        <li><NavLink to={"/adminDashboard"}>Admin Dashboard</NavLink></li>
+        <li><NavLink to={"/tests"}>All Tests</NavLink></li>
+        {user ? (isAdmin ?
+            <li><NavLink to={"/adminDashboard"}>Admin Dashboard</NavLink></li> : 
+            <li><NavLink to={"/userDashboard"}>Dashboard</NavLink></li>) : 
+            <></>
+        }
     </>
 
     return (
-        <div className="navbar px-5 lg:px-32">
+        <div className="navbar px-5 lg:px-32 bg-gradient-to-r from-white to-[#038b9d7a]">
             <div className="navbar-start">
                 <div className="dropdown">
                     <div
@@ -45,13 +49,20 @@ const Navbar = () => {
                 </div>
                 <Link to={"/"} className="text-primary text-2xl font-semibold">DiagnosTech</Link>
             </div>
-            <div className="navbar-center hidden lg:flex">
+            {/* <div className="navbar-center hidden lg:flex">
                 <ul className="menu menu-horizontal px-1 text-secondary font-semibold">
                     {navLinks}
                 </ul>
-            </div>
+            </div> */}
             <div className="navbar-end">
-                <a className="btn btn-md btn-primary text-white">Button</a>
+                <div className="mr-12 hidden lg:flex">
+                    <ul className="menu menu-horizontal px-1 text-secondary font-semibold">
+                        {navLinks}
+                    </ul>
+                </div>
+                {user ? <button onClick={logout} className="btn btn-md px-6 rounded-badge btn-primary text-white">Logout</button> : 
+                        <Link to={"/login"} className="btn btn-md px-6 rounded-badge btn-primary text-white">Login</Link>
+                }
             </div>
         </div>
     );
