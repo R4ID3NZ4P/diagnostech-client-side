@@ -43,7 +43,6 @@ const AllTests = () => {
     console.log(testData);
 
     const handleChange = e => {
-        console.log(e.target.value);
         const value = e.target.value;
         const temp = testData.filter(item => {
             return new Date(item.date) > new Date(Date.now());

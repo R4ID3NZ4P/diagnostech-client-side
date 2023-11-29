@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const TestCard = ({ data }) => {
 
@@ -18,7 +19,7 @@ const TestCard = ({ data }) => {
                 <p className="text-secondary"><span className="text-primary">Available Date:</span> {date}</p>
                 <p className="text-secondary"><span className="text-primary">Remaining Slots:</span> {slots}</p>
                 <div className="card-actions justify-end">
-                    <button className="btn btn-primary text-white">Details</button>
+                    <Link to={`/tests/${_id}`} className="btn btn-primary text-white">Details</Link>
                 </div>
             </div>
         </div>
