@@ -1,8 +1,22 @@
+import { Link, NavLink } from "react-router-dom";
+import useAuth from "../../../Hooks/useAuth";
 
 
 const Navbar = () => {
+
+    const {user, loading} = useAuth();
+
+    const navLinks = 
+    <>
+        <li><NavLink to={"/"}>Home</NavLink></li>
+        <li><NavLink to={"/all"}>All Tests</NavLink></li>
+        <li><NavLink to={"/login"}>Login</NavLink></li>
+        <li><NavLink to={"/userDashboard"}>Dashboard</NavLink></li>
+        <li><NavLink to={"/adminDashboard"}>Admin Dashboard</NavLink></li>
+    </>
+
     return (
-        <div className="navbar bg-base-100">
+        <div className="navbar px-5 lg:px-32">
             <div className="navbar-start">
                 <div className="dropdown">
                     <div
@@ -25,53 +39,19 @@ const Navbar = () => {
                             />
                         </svg>
                     </div>
-                    <ul className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
-                        <li>
-                            <a>Item 1</a>
-                        </li>
-                        <li>
-                            <a>Parent</a>
-                            <ul className="p-2">
-                                <li>
-                                    <a>Submenu 1</a>
-                                </li>
-                                <li>
-                                    <a>Submenu 2</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a>Item 3</a>
-                        </li>
+                    <ul className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52 text-secondary font-semibold">
+                        {navLinks}
                     </ul>
                 </div>
-                <a className="btn btn-ghost text-xl">daisyUI</a>
+                <Link to={"/"} className="text-primary text-2xl font-semibold">DiagnosTech</Link>
             </div>
             <div className="navbar-center hidden lg:flex">
-                <ul className="menu menu-horizontal px-1">
-                    <li>
-                        <a>Item 1</a>
-                    </li>
-                    <li>
-                        <details>
-                            <summary>Parent</summary>
-                            <ul className="p-2">
-                                <li>
-                                    <a>Submenu 1</a>
-                                </li>
-                                <li>
-                                    <a>Submenu 2</a>
-                                </li>
-                            </ul>
-                        </details>
-                    </li>
-                    <li>
-                        <a>Item 3</a>
-                    </li>
+                <ul className="menu menu-horizontal px-1 text-secondary font-semibold">
+                    {navLinks}
                 </ul>
             </div>
             <div className="navbar-end">
-                <a className="btn">Button</a>
+                <a className="btn btn-md btn-primary text-white">Button</a>
             </div>
         </div>
     );
