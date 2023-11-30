@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import useDetails from "../../Hooks/useDetails";
 import { FaArrowCircleRight } from "react-icons/fa";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
@@ -6,6 +6,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import { useEffect, useState } from "react";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import useAuth from "../../Hooks/useAuth";
+import Swal from "sweetalert2";
 
 
 const Details = () => {
@@ -16,6 +17,7 @@ const Details = () => {
     const {user} = useAuth();
     console.log(data);
     const { booked, date, details, image, name, price, slots, _id } = data;
+    const navigate = useNavigate();
     
     //stripe
     const [error, setError] = useState("");
@@ -100,6 +102,17 @@ const Details = () => {
                 axiosSecure.post("/bookings", payment)
                     .then(res => {
                         console.log(res.data);
+                        if(res.data?.result?.insertedId) {
+                            Swal.fire({
+                                position: "top",
+                                icon: "success",
+                                title: "Thank you for your payment",
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                            refetch();
+                            navigate(-1);
+                        }
                     })
             }
         }
