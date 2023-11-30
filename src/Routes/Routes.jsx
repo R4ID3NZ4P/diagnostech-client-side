@@ -11,6 +11,13 @@ import Dashboard from "../Layouts/Dashboard";
 import UserHome from "../Dashboard/UserHome/UserHome";
 import Appointments from "../Dashboard/Appointments/Appointments";
 import Results from "../Dashboard/Results/Results";
+import AllUsers from "../Dashboard/AllUsers/AllUsers";
+import AdminRoute from "./AdminRoute";
+import AddATest from "../Dashboard/AddATest/AddATest";
+import Tests from "../Dashboard/Tests/Tests";
+import Reservations from "../Dashboard/Reservations/Reservations";
+import AddABanner from "../Dashboard/AddABanner/AddABanner";
+import AllBanners from "../Dashboard/AllBanners/AllBanners";
 
 export const router = createBrowserRouter([
     {
@@ -56,6 +63,30 @@ export const router = createBrowserRouter([
             {
                 path: "userResults",
                 element: <Results></Results>
+            },
+            {
+                path: "allUsers",
+                element: <AdminRoute><AllUsers></AllUsers></AdminRoute>
+            },
+            {
+                path: "addTest",
+                element: <AdminRoute><AddATest></AddATest></AdminRoute>
+            },
+            {
+                path: "allTests",
+                element: <AdminRoute><Tests></Tests></AdminRoute>
+            },
+            {
+                path: "reservations",
+                element: <AdminRoute><Reservations></Reservations></AdminRoute>
+            },
+            {
+                path: "addBanner",
+                element: <AdminRoute><AddABanner></AddABanner></AdminRoute>
+            },
+            {
+                path: "allBanners",
+                element: <AdminRoute><AllBanners></AllBanners></AdminRoute>
             }
         ]
     }

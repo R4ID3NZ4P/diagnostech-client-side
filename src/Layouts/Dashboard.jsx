@@ -7,7 +7,27 @@ const Dashboard = () => {
     const navLinks = isAdmin ? (
         <>
             <li>
-                <a>Link</a>
+                <NavLink to={"/dashboard/allUsers"}>All Users</NavLink>
+            </li>
+
+            <li>
+                <NavLink to={"/dashboard/addTest"}>Add A Test</NavLink>
+            </li>
+
+            <li>
+                <NavLink to={"/dashboard/allTests"}>All Tests</NavLink>
+            </li>
+
+            <li>
+                <NavLink to={"/dashboard/reservations"}>Reservations</NavLink>
+            </li>
+
+            <li>
+                <NavLink to={"/dashboard/addBanner"}>Add A Banner</NavLink>
+            </li>
+
+            <li>  
+                <NavLink to={"/dashboard/allBanners"}>All Banners</NavLink>
             </li>
         </>
     ) : (
