@@ -33,7 +33,9 @@ const Results = () => {
 
 
     return (
-        <div className="overflow-x-auto">
+        <div>
+            <h1 className="text-3xl font-bold text-center my-12">Test Results</h1>
+            <div className="overflow-x-auto">
                 <table className="table table-zebra">
                     {/* head */}
                     <thead>
@@ -51,13 +53,16 @@ const Results = () => {
                                 <th>{(idx + 1)}</th>
                                 <td>{test.name}</td>
                                 <td>{test.transactionId}</td>
-                                <td><button className="btn btn-sm btn-error">{test.status}</button></td>
+                                {test.status === "pending" ? <td><button className="btn btn-sm btn-warning">Pending</button></td> :
+                                    <td><a href={test.result} className="btn btn-sm btn-success" download={`${test.name}_result.pdf`}>Download Result</a></td>
+                                }
                             </tr>)
                         }
                     
                     </tbody>
                 </table>
             </div>
+        </div>
     );
 };
 
