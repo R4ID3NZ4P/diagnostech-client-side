@@ -5,6 +5,8 @@ import GoogleLogin from "../Shared/GoogleLogin/GoogleLogin";
 import { useEffect, useState } from "react";
 import useAxiosPublic from "../../Hooks/useAxiosPublic";
 import Swal from "sweetalert2";
+import { PiWarningCircleLight } from "react-icons/pi";
+
 
 const Register = () => {
     const {
@@ -109,8 +111,8 @@ const Register = () => {
                                     required: true,
                                 })}
                             />
-                            {errors?.email?.type === "required" && <p className="text-red-500 text-xs mt-1">
-                                This field is required
+                            {errors?.email?.type === "required" && <p className="text-red-500 text-xs mt-1 flex items-center gap-1">
+                                <PiWarningCircleLight className="text-base" />This field is required
                             </p>}
                         </div>
                         <div className="form-control">
@@ -125,8 +127,8 @@ const Register = () => {
                                     required: true,
                                 })}
                             />
-                            {errors?.name?.type === "required" && <p className="text-red-500 text-xs mt-1">
-                                This field is required
+                            {errors?.name?.type === "required" && <p className="text-red-500 text-xs mt-1 flex items-center gap-1">
+                                <PiWarningCircleLight className="text-base" />This field is required
                             </p>}
                         </div>
                         <div className="form-control">
@@ -140,8 +142,8 @@ const Register = () => {
                                     required: true,
                                 })}
                             />
-                            {errors?.avatar?.type === "required" && <p className="text-red-500 text-xs mt-1">
-                                Please provide an image
+                            {errors?.avatar?.type === "required" && <p className="text-red-500 text-xs mt-1 flex items-center gap-1">
+                                <PiWarningCircleLight className="text-base" />Please provide an image
                             </p>}
                         </div>
                         <div className="form-control">
@@ -169,8 +171,8 @@ const Register = () => {
                                 <option value={"AB+"}>AB+</option>
                                 <option value={"AB-"}>AB-</option>
                             </select>
-                            {errors?.bg && <p className="text-red-500 text-xs mt-1">
-                                {errors?.bg?.message}
+                            {errors?.bg && <p className="text-red-500 text-xs mt-1 flex items-center gap-1">
+                                <PiWarningCircleLight className="text-base" />{errors?.bg?.message}
                             </p>}
                         </div>
                         <div className="form-control">
@@ -195,8 +197,8 @@ const Register = () => {
                                     </option>
                                 ))}
                             </select>
-                            {errors?.district && <p className="text-red-500 text-xs mt-1">
-                                {errors?.district?.message}
+                            {errors?.district && <p className="text-red-500 text-xs mt-1 flex items-center gap-1">
+                                <PiWarningCircleLight className="text-base" />{errors?.district?.message}
                             </p>}
                         </div>
                         <div className="form-control">
@@ -221,8 +223,8 @@ const Register = () => {
                                     </option>
                                 ))}
                             </select>
-                            {errors?.upazila && <p className="text-red-500 text-xs mt-1">
-                                {errors?.upazila?.message}
+                            {errors?.upazila && <p className="text-red-500 text-xs mt-1 flex items-center gap-1">
+                                <PiWarningCircleLight className="text-base" />{errors?.upazila?.message}
                             </p>}
                         </div>
                         <div className="form-control">
@@ -243,23 +245,23 @@ const Register = () => {
                                 })}
                             />
                             {errors.password?.type === "required" && (
-                                <p className="text-red-500 text-xs mt-1">
-                                    Password is required
+                                <p className="text-red-500 text-xs mt-1 flex items-center gap-1">
+                                    <PiWarningCircleLight className="text-base" />Password is required
                                 </p>
                             )}
                             {errors.password?.type === "minLength" && (
-                                <p className="text-red-500 text-xs mt-1">
-                                    Password must be at least 6 characters long
+                                <p className="text-red-500 text-xs mt-1 flex items-center gap-1">
+                                    <PiWarningCircleLight className="text-base" />Password must be at least 6 characters long
                                 </p>
                             )}
                             {errors.password?.type === "maxLength" && (
-                                <p className="text-red-500 text-xs mt-1">
-                                    Password must be less than 20 characters
+                                <p className="text-red-500 text-xs mt-1 flex items-center gap-1">
+                                    <PiWarningCircleLight className="text-base" />Password must be less than 20 characters
                                 </p>
                             )}
                             {errors.password?.type === "pattern" && (
-                                <p className="text-red-500 text-xs mt-1">
-                                    Password must have an uppercase letter, a number and a special character.
+                                <p className="text-red-500 text-xs mt-1 flex items-center gap-1">
+                                    <PiWarningCircleLight className="text-base" />Password must have an uppercase letter, a number and a special character.
                                 </p>
                             )}
                         </div>
@@ -279,11 +281,11 @@ const Register = () => {
                                     value === getValues("password") || "The passwords do not match"
                                 })}
                             />
-                            {errors?.confirm?.type === "validate" && <p className="text-red-500 text-xs mt-1">
-                                {errors?.confirm?.message}
+                            {errors?.confirm?.type === "validate" && <p className="text-red-500 text-xs mt-1 flex items-center gap-1">
+                                <PiWarningCircleLight className="text-base" />{errors?.confirm?.message}
                             </p>}
-                            {errors?.confirm?.type === "required" && <p className="text-red-500 text-xs mt-1">
-                                Please retype your password
+                            {errors?.confirm?.type === "required" && <p className="text-red-500 text-xs mt-1 flex items-center gap-1">
+                                <PiWarningCircleLight className="text-base" />Please retype your password
                             </p>}
                         </div>
                         <div className="form-control mt-6">

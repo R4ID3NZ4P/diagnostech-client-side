@@ -6,6 +6,7 @@ import Login from "../pages/Login/Login";
 import Register from "../pages/Register/Register";
 import Error from "../pages/Error/Error";
 import Details from "../pages/Details/Details";
+import PrivateRoute from "./PrivateRoute";
 
 export const router = createBrowserRouter([
     {
@@ -31,7 +32,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: "/tests/:id",
-                element: <Details></Details>
+                element: <PrivateRoute><Details></Details></PrivateRoute>
             }
         ],
     },

@@ -1,6 +1,11 @@
 import { useParams } from "react-router-dom";
 import useDetails from "../../Hooks/useDetails";
 import { FaArrowCircleRight } from "react-icons/fa";
+import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+import { useEffect, useState } from "react";
+import useAxiosSecure from "../../Hooks/useAxiosSecure";
+import useAuth from "../../Hooks/useAuth";
 
 
 const Details = () => {
@@ -8,11 +13,104 @@ const Details = () => {
     const params = useParams();
     console.log(params);
     const {data, refetch, isPending} = useDetails(params.id);
+    const {user} = useAuth();
     console.log(data);
     const { booked, date, details, image, name, price, slots, _id } = data;
     
+    //stripe
+    const [error, setError] = useState("");
+    const [clientSecret, setClientSecret] = useState("");
+    const [transactionId, setTransactionId] = useState("");
+    const stripe = useStripe();
+    const elements = useElements();
+    const axiosSecure = useAxiosSecure();
+    const [netPrice, setNetPrice] = useState(0);
+
+    useEffect(() => {
+        setNetPrice(price);
+        if (netPrice > 0){
+            axiosSecure.post("/payment-intent", {price: netPrice})
+            .then(res => {
+                console.log(res.data.clientSecret);
+                setClientSecret(res.data.clientSecret);
+            })}
+    }, [price, axiosSecure, netPrice]);
+
+    if (isPending) {
+        return (
+            <div className="min-h-screen px-5 lg:px-32 bg-gradient-to-r from-white to-[#038b9d7a] flex items-center justify-center">
+                <div className="flex justify-center items-center">
+                    <div className="flex flex-col gap-4 w-96">
+                        <div className="skeleton h-32 w-full"></div>
+                        <div className="skeleton h-4 w-28"></div>
+                        <div className="skeleton h-4 w-full"></div>
+                        <div className="skeleton h-4 w-full"></div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        if(!stripe || !elements) return;
+
+        const card = elements.getElement(CardElement);
+
+        if(card === null) return;
+
+        const { error, paymentMethod } = await stripe.createPaymentMethod({
+            type: "card",
+            card
+        });
+
+        if(error) {
+            console.log(error);
+            setError(error.message)
+        }
+        else{
+            setError("");
+        }
+
+        const {paymentIntent, error: confirmError} = await stripe.confirmCardPayment(clientSecret, {
+            payment_method: {
+                card: card,
+                billing_details: {
+                    email: user?.email || "anonymous",
+                    name: user?.displayName || "anonymous"
+                }
+            }
+        });
+
+        if(confirmError) console.log(confirmError);
+        else {
+            if(paymentIntent.status === "succeeded") {
+                console.log("trx ", paymentIntent.id);
+                setTransactionId(paymentIntent.id);
+
+                const payment = {
+                    email: user.email,
+                    price: netPrice,
+                    transactionId: paymentIntent.id,
+                    date: new Date(),
+                    service: _id,
+                    status: "pending"
+                };
+                axiosSecure.post("/bookings", payment)
+                    .then(res => {
+                        console.log(res.data);
+                    })
+            }
+        }
+
+
+
+    }
+    
     return (
-        <div className="min-h-screen py-12 px-5 lg:px-32 bg-gradient-to-r from-white to-[#038b9d7a] flex items-center justify-center">
+        <>
+            <div className="min-h-screen py-12 px-5 lg:px-32 bg-gradient-to-r from-white to-[#038b9d7a] flex items-center justify-center">
             <div className="py-12">
                 <div className="flex flex-col lg:flex-row items-center justify-center gap-10 lg:gap-20">
                     <div>
@@ -23,7 +121,10 @@ const Details = () => {
                         <p className="mb-6"><span className="text-secondary font-semibold">Booked Slots: </span>{booked}</p>
                         <p className="mb-6"><span className="text-secondary font-semibold">Available Slots: </span>{slots}</p>
                         <p className="mb-6"><span className="text-secondary font-semibold">Available Date: </span>{date}</p>
-                        <button className="btn btn-primary px-8 rounded-badge text-white" disabled={slots === 0 ? true : false} >Book Now <FaArrowCircleRight className="text-2xl" /></button>
+                        <p className="mb-6"><span className="text-secondary font-semibold">Price: </span>${price}</p>
+                        <button onClick={()=>document.getElementById('book-modal').showModal()} 
+                            className="btn btn-primary px-8 rounded-badge text-white" 
+                            disabled={slots === 0 ? true : false} >Book Now <FaArrowCircleRight className="text-2xl" /></button>
                     </div>
                 </div>
                 <div className="mt-12">
@@ -36,7 +137,43 @@ const Details = () => {
                     </div>
                 </div>
             </div>
-        </div>
+            </div>
+            {/* Open the modal using document.getElementById('ID').showModal() method */}
+            <dialog id="book-modal" className="modal modal-bottom sm:modal-middle">
+            <div className="modal-box">
+                <h1 className="mb-4"><span className="text-secondary font-semibold">Payable Amount:</span> ${netPrice}</h1>
+                <form onSubmit={handleSubmit}>
+                    <CardElement 
+                        options={{
+                            style: {
+                                base: {
+                                    fontSize: '16px',
+                                    color: '#424770',
+                                    '::placeholder': {
+                                        color: '#aab7c4',
+                                    },
+                                },
+                                invalid: {
+                                    color: '#9e2146',
+                                },
+                            },
+                        }}
+                    />
+                    <button className="btn btn-sm btn-primary my-4" type="submit" disabled={!stripe || !clientSecret}>
+                        Pay
+                    </button>
+                    <p className="text-red-600">{error}</p>
+                    {transactionId && <p className="text-green-600"> Your transaction id: {transactionId}</p>}
+                </form>
+                <div className="modal-action">
+                <form method="dialog">
+                    {/* if there is a button in form, it will close the modal */}
+                    <button className="btn">Close</button>
+                </form>
+                </div>
+            </div>
+            </dialog>
+        </>
     );
 };
 
