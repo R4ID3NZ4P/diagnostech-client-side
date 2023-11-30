@@ -7,6 +7,10 @@ import Register from "../pages/Register/Register";
 import Error from "../pages/Error/Error";
 import Details from "../pages/Details/Details";
 import PrivateRoute from "./PrivateRoute";
+import Dashboard from "../Layouts/Dashboard";
+import UserHome from "../Dashboard/UserHome/UserHome";
+import Appointments from "../Dashboard/Appointments/Appointments";
+import Results from "../Dashboard/Results/Results";
 
 export const router = createBrowserRouter([
     {
@@ -36,4 +40,23 @@ export const router = createBrowserRouter([
             }
         ],
     },
+    {
+        path: "/dashboard",
+        element: <PrivateRoute><Dashboard></Dashboard></PrivateRoute>,
+        errorElement: <Error></Error>,
+        children: [
+            {
+                path: "userHome",
+                element: <UserHome></UserHome>
+            },
+            {
+                path: "userAppointments",
+                element: <Appointments></Appointments>
+            },
+            {
+                path: "userResults",
+                element: <Results></Results>
+            }
+        ]
+    }
 ]);

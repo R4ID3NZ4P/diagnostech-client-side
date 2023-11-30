@@ -13,8 +13,8 @@ const Navbar = () => {
         <li><NavLink to={"/"}>Home</NavLink></li>
         <li><NavLink to={"/tests"}>All Tests</NavLink></li>
         {user ? (isAdmin ?
-            <li><NavLink to={"/adminDashboard"}>Admin Dashboard</NavLink></li> : 
-            <li><NavLink to={"/userDashboard"}>Dashboard</NavLink></li>) : 
+            <li><NavLink to={"/dashboard/adminHome"}>Admin Dashboard</NavLink></li> : 
+            <li><NavLink to={"/dashboard/userHome"}>Dashboard</NavLink></li>) : 
             <></>
         }
     </>

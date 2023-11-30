@@ -97,7 +97,8 @@ const Details = () => {
                     transactionId: paymentIntent.id,
                     date: new Date(),
                     service: _id,
-                    status: "pending"
+                    status: "pending",
+                    name
                 };
                 axiosSecure.post("/bookings", payment)
                     .then(res => {
