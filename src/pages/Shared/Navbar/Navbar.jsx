@@ -5,7 +5,7 @@ import useAdmin from "../../../Hooks/useAdmin";
 
 const Navbar = () => {
 
-    const {user, loading, logout} = useAuth();
+    const {user, logout} = useAuth();
     const { isAdmin } = useAdmin();
 
     const navLinks = 

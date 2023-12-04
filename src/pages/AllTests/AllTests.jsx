@@ -4,7 +4,7 @@ import TestCard from "./TestCard";
 
 const AllTests = () => {
     // const [tests, setTests] = useState([]);
-    const { testData, refetch, isPending } = useTests();
+    const { testData, isPending } = useTests();
     const [data, setData] = useState([]);
 
     useEffect(() => {
