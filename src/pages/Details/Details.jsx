@@ -2,7 +2,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import useDetails from "../../Hooks/useDetails";
 import { FaArrowCircleRight } from "react-icons/fa";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
 import { useEffect, useState } from "react";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import useAuth from "../../Hooks/useAuth";
@@ -22,7 +21,6 @@ const Details = () => {
     //stripe
     const [error, setError] = useState("");
     const [clientSecret, setClientSecret] = useState("");
-    const [transactionId, setTransactionId] = useState("");
     const stripe = useStripe();
     const elements = useElements();
     const axiosSecure = useAxiosSecure();
@@ -62,7 +60,7 @@ const Details = () => {
 
         if(card === null) return;
 
-        const { error, paymentMethod } = await stripe.createPaymentMethod({
+        const { error } = await stripe.createPaymentMethod({
             type: "card",
             card
         });
@@ -88,8 +86,6 @@ const Details = () => {
         if(confirmError) console.log(confirmError);
         else {
             if(paymentIntent.status === "succeeded") {
-                console.log("trx ", paymentIntent.id);
-                setTransactionId(paymentIntent.id);
 
                 const payment = {
                     email: user.email,

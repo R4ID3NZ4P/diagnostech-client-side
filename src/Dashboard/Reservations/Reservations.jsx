@@ -3,6 +3,7 @@ import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import { useParams } from "react-router-dom";
 import useDetails from "../../Hooks/useDetails";
 import Swal from "sweetalert2";
+import { useEffect, useState } from "react";
 
 
 const Reservations = () => {
@@ -16,6 +17,11 @@ const Reservations = () => {
             return res.data;
         }
     });
+    const [search, setSearch] = useState("");
+    const [filteredData, setFilteredData] = useState([]);
+    useEffect(() => {
+        setFilteredData(data);
+    }, [data]);
 
     if (isPending) {
         return (
@@ -77,11 +83,32 @@ const Reservations = () => {
             }
         });
     }
+
+    const handleChange = e => {
+        setSearch(e.target.value);
+        console.log(search);
+    }
+
+    const handleSearch = () => {
+        const filtered = data.filter(item => item.email.includes(search));
+        if(filtered.length > 0) setFilteredData(filtered);
+        else setFilteredData([]);
+    }
     
     return (
-        <div>
+        <div className="flex flex-col items-center w-full">
             <h1 className="text-3xl font-bold text-center my-12">Reservations of {testData.name}</h1>
-            <div className="overflow-x-auto mb-6">
+            <div className="join">
+            <div>
+                <div>
+                <input onChange={handleChange} className="input input-bordered join-item" placeholder="Search"/>
+                </div>
+            </div>
+            <div className="indicator">
+                <button onClick={handleSearch} className="btn join-item">Search</button>
+            </div>
+            </div>
+            <div className="overflow-x-auto mb-6 w-full">
                 <table className="table table-zebra">
                     {/* head */}
                     <thead>
@@ -94,8 +121,9 @@ const Reservations = () => {
                     </tr>
                     </thead>
                     <tbody>
-                        {data.length === 0 && <tr><td className="text-center" colSpan={5}>No Reservations</td></tr>}
-                        {data.map((test, idx) => 
+                        {console.log(filteredData)}
+                        {filteredData.length === 0 && <tr><td className="text-center" colSpan={5}>No Reservations</td></tr>}
+                        {filteredData.map((test, idx) => 
                             <tr key={test._id}>
                                 <th>{(idx + 1)}</th>
                                 <td>{test.name}</td>
