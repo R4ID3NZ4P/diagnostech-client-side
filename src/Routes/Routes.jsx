@@ -18,6 +18,7 @@ import Tests from "../Dashboard/Tests/Tests";
 import Reservations from "../Dashboard/Reservations/Reservations";
 import AddABanner from "../Dashboard/AddABanner/AddABanner";
 import AllBanners from "../Dashboard/AllBanners/AllBanners";
+import UpdateTest from "../Dashboard/UpdateTest/UpdateTest";
 
 export const router = createBrowserRouter([
     {
@@ -87,7 +88,11 @@ export const router = createBrowserRouter([
             {
                 path: "allBanners",
                 element: <AdminRoute><AllBanners></AllBanners></AdminRoute>
-            }
+            },
+            {
+                path: "allTests/update/:id",
+                element: <AdminRoute><UpdateTest></UpdateTest></AdminRoute>
+            },
         ]
     }
 ]);
