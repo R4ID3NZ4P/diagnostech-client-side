@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import useAuth from "../../Hooks/useAuth";
 import Swal from "sweetalert2";
+import useAxiosPublic from "../../Hooks/useAxiosPublic";
 
 
 const Details = () => {
@@ -17,6 +18,8 @@ const Details = () => {
     console.log(data);
     const { booked, date, details, image, name, price, slots, _id } = data;
     const navigate = useNavigate();
+    const [banner, setBanner] = useState({});
+    const [coupon, setCoupon] = useState("");
     
     //stripe
     const [error, setError] = useState("");
@@ -24,17 +27,22 @@ const Details = () => {
     const stripe = useStripe();
     const elements = useElements();
     const axiosSecure = useAxiosSecure();
+    const axiosPublic = useAxiosPublic();
     const [netPrice, setNetPrice] = useState(0);
 
     useEffect(() => {
         setNetPrice(price);
+    }, [price])
+
+    useEffect(() => { 
+        axiosPublic.get("/banner").then(res => setBanner(res.data));
         if (netPrice > 0){
             axiosSecure.post("/payment-intent", {price: netPrice})
             .then(res => {
                 console.log(res.data.clientSecret);
                 setClientSecret(res.data.clientSecret);
             })}
-    }, [price, axiosSecure, netPrice]);
+    }, [axiosSecure, netPrice, banner, axiosPublic]);
 
     if (isPending) {
         return (
@@ -116,6 +124,18 @@ const Details = () => {
 
 
 
+    };
+
+    const handleCoupon = e => {
+        e.preventDefault();
+
+        if(coupon === banner.coupon) {
+            setNetPrice(price - (price*(parseInt(banner.rate)/100)));
+        }
+    };
+
+    const handleChange = e => {
+        setCoupon(e.target.value);
     }
     
     return (
@@ -132,7 +152,7 @@ const Details = () => {
                         <p className="mb-6"><span className="text-secondary font-semibold">Available Slots: </span>{slots}</p>
                         <p className="mb-6"><span className="text-secondary font-semibold">Available Date: </span>{date}</p>
                         <p className="mb-6"><span className="text-secondary font-semibold">Price: </span>${price}</p>
-                        <button onClick={()=>document.getElementById('book-modal').showModal()} 
+                        <button onClick={()=>document.getElementById(`modal-${_id}`).showModal()} 
                             className="btn btn-primary px-8 rounded-badge text-white" 
                             disabled={slots === 0 ? true : false} >Book Now <FaArrowCircleRight className="text-2xl" /></button>
                     </div>
@@ -149,9 +169,15 @@ const Details = () => {
             </div>
             </div>
             {/* Open the modal using document.getElementById('ID').showModal() method */}
-            <dialog id="book-modal" className="modal modal-bottom sm:modal-middle">
+            <dialog id={`modal-${_id}`} className="modal modal-bottom sm:modal-middle">
             <div className="modal-box">
                 <h1 className="mb-4"><span className="text-secondary font-semibold">Payable Amount:</span> ${netPrice}</h1>
+                <form onSubmit={handleCoupon}>
+                    <div className="join mb-6">
+                        <input onChange={handleChange} className="input input-bordered join-item" placeholder="Apply A Coupon Code"/>
+                        <button className="btn btn-info join-item rounded-r-lg">Apply</button>
+                    </div>
+                </form>
                 <form onSubmit={handleSubmit}>
                     <CardElement 
                         options={{

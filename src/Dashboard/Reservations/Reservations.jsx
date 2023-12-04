@@ -121,7 +121,6 @@ const Reservations = () => {
                     </tr>
                     </thead>
                     <tbody>
-                        {console.log(filteredData)}
                         {filteredData.length === 0 && <tr><td className="text-center" colSpan={5}>No Reservations</td></tr>}
                         {filteredData.map((test, idx) => 
                             <tr key={test._id}>
