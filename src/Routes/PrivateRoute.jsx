@@ -1,6 +1,5 @@
 import { Navigate, useLocation } from "react-router-dom";
 import useAuth from "../Hooks/useAuth";
-import useUser from "../Hooks/useUser";
 import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
 import useAxiosSecure from "../Hooks/useAxiosSecure";
