@@ -30,7 +30,8 @@ const Appointments = () => {
             confirmButtonText: "Yes, cancel appointment"
           }).then((result) => {
             if (result.isConfirmed) {
-                axiosSecure.delete(`/bookings/${id}`)
+                // axiosSecure.delete(`/bookings/${id}`)
+                axiosSecure.delete(`/reservations?service=${id}&email=${user.email}`)
                 .then(res => {
                     if(res.data.deletedCount > 0) {
                         Swal.fire({

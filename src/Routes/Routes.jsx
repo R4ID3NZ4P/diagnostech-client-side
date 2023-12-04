@@ -78,10 +78,6 @@ export const router = createBrowserRouter([
                 element: <AdminRoute><Tests></Tests></AdminRoute>
             },
             {
-                path: "reservations",
-                element: <AdminRoute><Reservations></Reservations></AdminRoute>
-            },
-            {
                 path: "addBanner",
                 element: <AdminRoute><AddABanner></AddABanner></AdminRoute>
             },
@@ -92,6 +88,10 @@ export const router = createBrowserRouter([
             {
                 path: "allTests/update/:id",
                 element: <AdminRoute><UpdateTest></UpdateTest></AdminRoute>
+            },
+            {
+                path: "allTests/reservations/:id",
+                element: <AdminRoute><Reservations></Reservations></AdminRoute>
             },
         ]
     }

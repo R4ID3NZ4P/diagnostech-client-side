@@ -53,6 +53,10 @@ const Tests = () => {
         navigate(`update/${id}`);
     };
 
+    const handleReservations = (id) => {
+        navigate(`reservations/${id}`);
+    }
+
     return (
         <div>
             <h1 className="text-3xl font-bold text-center my-12">All Tests</h1>
@@ -70,7 +74,7 @@ const Tests = () => {
                     </tr>
                     </thead>
                     <tbody>
-                        {testData.length === 0 && <tr><td className="text-center" colSpan={4}>No Tests</td></tr>}
+                        {testData.length === 0 && <tr><td className="text-center" colSpan={6}>No Tests</td></tr>}
                         {testData.map((test, idx) => 
                             <tr key={test._id}>
                                 <th>{(idx + 1)}</th>
@@ -78,7 +82,7 @@ const Tests = () => {
                                 <td>{test.date}</td>
                                 <td><button onClick={() => handleDelete(test._id)} className="btn btn-sm btn-error">Delete</button></td>
                                 <td><button onClick={() => handleUpdate(test._id)} className="btn btn-sm btn-warning">Update</button></td>
-                                <td><button className="btn btn-sm btn-info">Reservations</button></td>
+                                <td><button onClick={() => handleReservations(test._id)} className="btn btn-sm btn-info">Reservations</button></td>
                             </tr>)
                         }
                     

@@ -19,10 +19,6 @@ const Dashboard = () => {
             </li>
 
             <li>
-                <NavLink to={"/dashboard/reservations"}>Reservations</NavLink>
-            </li>
-
-            <li>
                 <NavLink to={"/dashboard/addBanner"}>Add A Banner</NavLink>
             </li>
 
